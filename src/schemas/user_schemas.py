@@ -18,7 +18,7 @@ class UserRead(UserBase):
     id: int
     created_at: datetime.datetime
     updated_at: datetime.datetime
-    deleted_at: datetime.datetime
+    deleted_at: Optional[datetime.datetime]
     class Config:
         orm_mode = True
         allow_population_by_field_name = True

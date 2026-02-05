@@ -34,7 +34,8 @@ class UserRepository:
                 name=user.name,
                 email=user.email,
                 password=hash_password(user.password),
-                created_at=datetime.datetime.now()
+                created_at=datetime.datetime.now(),
+                updated_at=datetime.datetime.now()
             )
             db.add(new_user)
             db.commit()
@@ -46,7 +47,6 @@ class UserRepository:
             raise
 
     
-
     @classmethod
     def find_all(cls, params, db: Session = Depends(get_db)):
         filters =[]
@@ -74,27 +74,32 @@ class UserRepository:
         finally:
             db.close()
 
-    
+
     @classmethod
-    def update_user(cls, user_id: int, user, db: Session = Depends(get_db)):
+    def update_user(cls, user_id: int, user_data: dict, db: Session):
         try:
             values_dict = {}
-            for k, v in user:
-                if v:
+            for k, v in user_data.items():
+                if k == "password" and v:
+                    values_dict[k] = hash_password(v)
+                elif v is not None:
                     values_dict[k] = v
-            # values_dict["updated"] = datetime.datetime.now()
-            values_dict["password"] = hash_password(values_dict["password"])
-            for field, value in values_dict.items():
-                setattr(user, field, value)
-            print(values_dict)
-            query_update_user = update(Users).where(Users.id == user_id).values(values_dict)
-            db.session.execute(query_update_user)
-            db.session.commit()
-            updated_user = db.session.query(Users).filter(Users.id == user_id).first()
+
+            values_dict["updated_at"] = datetime.datetime.now()
+
+            query_update_user = (
+                update(Users)
+                .where(Users.id == user_id)
+                .values(**values_dict)
+                .execution_options(synchronize_session="fetch")
+            )
+
+            db.execute(query_update_user)
+            db.commit()
+
+            updated_user = db.query(Users).filter(Users.id == user_id).first()
             return updated_user
+
         except Exception as e:
-            print(e)
-            db.session.rollback()
-            raise Exception
-        finally:
-            db.close()
+            db.rollback()
+            raise e
