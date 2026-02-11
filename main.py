@@ -4,7 +4,8 @@ from src.models import models
 from src.routes import (
     user_routes,
     stock_routes,
-    product_routes
+    product_routes,
+    client_routes
 )
 
 app = FastAPI()
@@ -21,3 +22,4 @@ app.add_middleware(
 app.include_router(user_routes.router)
 app.include_router(stock_routes.router)
 app.include_router(product_routes.router)
+app.include_router(client_routes.router)
