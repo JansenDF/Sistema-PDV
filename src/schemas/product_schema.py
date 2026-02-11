@@ -12,9 +12,15 @@ class ProductCreate(ProductBase):
 class ProductUpdate(BaseModel):
     description: str
 
+class StockRead(BaseModel):
+    description: str
+
+    class Config:
+        from_attributes = True
+
 class ProductRead(ProductBase):
     id: int
-    stock_id: int
+    stock: StockRead
     created_at: datetime.datetime
     updated_at: datetime.datetime
     deleted_at: Optional[datetime.datetime]
