@@ -20,5 +20,5 @@ class UserRead(UserBase):
     updated_at: datetime.datetime
     deleted_at: Optional[datetime.datetime]
     class Config:
-        orm_mode = True
-        allow_population_by_field_name = True
+        from_attributes = True
+        validate_by_name = True
