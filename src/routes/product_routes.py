@@ -33,6 +33,11 @@ def read_product(product_id: int, db: Session = Depends(get_db)):
 
 @router.patch("/{product_id}", response_model=ProductRead)
 def partial_update_product(product_id: int, product: ProductUpdate, db: Session = Depends(get_db)):
+
+    has_product = db.query(Products).get(product_id)
+    if not has_product:
+        raise HTTPException(status_code=404, detail="Produto não existe")
+
     product_data = product.model_dump(exclude_unset=True)
     try:
         db_product = ProductRepository.update_product(product_id=product_id, product_data=product_data, db=db)
