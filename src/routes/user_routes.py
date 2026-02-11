@@ -34,11 +34,10 @@ from src.schemas.user_schemas import UserUpdate  # Certifique-se de ter esse sch
 
 
 @router.patch("/{user_id}", response_model=UserRead)
-def partial_update_user(user_id: int, user: UserUpdate):
-    # if not user:
-    #     raise HTTPException(status_code=404, detail="Usuário não encontrado")
+def partial_update_user(user_id: int, user: UserUpdate, db: Session = Depends(get_db)):
+    user_data = user.model_dump(exclude_unset=True)
     try:
-        db_user = UserRepository.update_user(user_id=user_id, user=user)
+        db_user = UserRepository.update_user(user_id=user_id, user_data=user_data, db=db)
         return db_user
     except Exception as e:
         print(e)

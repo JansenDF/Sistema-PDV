@@ -2,19 +2,16 @@ from pydantic import BaseModel
 from typing import Optional
 import datetime
 
-class UserBase(BaseModel):
-    name: str
-    email: str
+class StockBase(BaseModel):
+    description: str
 
-class UserCreate(UserBase):
-    password: str
+class StockCreate(StockBase):
+    pass
 
-class UserUpdate(BaseModel):
-    name: Optional[str] = None
-    email: Optional[str] = None
-    password: Optional[str] = None
+class StockUpdate(BaseModel):
+    description: Optional[str] = None
 
-class UserRead(UserBase):
+class StockRead(StockBase):
     id: int
     created_at: datetime.datetime
     updated_at: datetime.datetime
