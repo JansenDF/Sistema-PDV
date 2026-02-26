@@ -87,3 +87,28 @@ class Suppliers(Base):
     created_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True), onupdate=func.now())
     deleted_at: Mapped[Optional[datetime.datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
+
+
+class Purchases(Base):
+    __tablename__ = "purchases"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, index=True)
+    supplier_id: Mapped[int] = mapped_column(ForeignKey("suppliers.id"))
+    supplier: Mapped["Suppliers"] = relationship()
+    items: Mapped[list["PurchasesItems"]] = relationship(back_populates="purchase", cascade="all, delete-orphan")
+    created_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True), onupdate=func.now())
+    deleted_at: Mapped[Optional[datetime.datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
+
+
+class PurchasesItems(Base):
+    __tablename__ = "purchases_items"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, index=True)
+    purchase_id: Mapped[int] = mapped_column(ForeignKey("purchases.id"))
+    product_id: Mapped[int] = mapped_column(ForeignKey("products.id"))
+    quantity: Mapped[int] = mapped_column(Integer, nullable=False)
+    unit_price: Mapped[float] = mapped_column(Numeric(10, 2), nullable=False)
+
+    purchase: Mapped["Purchases"] = relationship(back_populates="items")
+    product: Mapped["Products"] = relationship()
