@@ -5,12 +5,14 @@ import datetime
 class ProductBase(BaseModel):
     description: str
     quantity: int
+    price: float
 
 class ProductCreate(ProductBase):
     stock_id: int
 
 class ProductUpdate(BaseModel):
-    description: str
+    description: Optional[str] = None
+    price: Optional[float] = None
 
 class StockRead(BaseModel):
     description: str

@@ -33,8 +33,9 @@ class Products(Base):
     __tablename__ = "products"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, index=True)
-    description: Mapped[str] = mapped_column(String, index=True, unique=True)
+    description: Mapped[str] = mapped_column(String, index=True)
     quantity: Mapped[int] = mapped_column(Integer, nullable=False)
+    price: Mapped[float] = mapped_column(Numeric(10, 2), nullable=False)
     stock_id: Mapped[int] = mapped_column(ForeignKey("stocks.id"))
     stock: Mapped["Stocks"] = relationship(back_populates="stock_products")
     created_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())

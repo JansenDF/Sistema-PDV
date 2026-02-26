@@ -20,6 +20,7 @@ class ProductRepository:
             new_product = Products(
                 description=product.description,
                 quantity=product.quantity,
+                price=product.price,
                 stock_id=product.stock_id,
                 created_at=datetime.datetime.now(),
                 updated_at=datetime.datetime.now()
