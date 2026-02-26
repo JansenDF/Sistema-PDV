@@ -32,3 +32,14 @@ class SaleRead(SaleBase):
     class Config:
         from_attributes = True
         validate_by_name = True
+
+
+class SaleSummary(BaseModel):
+    sale_id: int
+    client_name: str
+    operator_name: str
+    total_value: float
+    created_at: datetime.datetime
+
+    class Config:
+        from_attributes = True
