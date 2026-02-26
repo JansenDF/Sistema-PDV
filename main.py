@@ -8,7 +8,8 @@ from src.routes import (
     client_routes,
     sale_routes,
     supplier_routes,
-    purchase_routes
+    purchase_routes,
+    reports_stock_routes
 )
 
 app = FastAPI()
@@ -29,3 +30,4 @@ app.include_router(client_routes.router)
 app.include_router(sale_routes.router)
 app.include_router(supplier_routes.router)
 app.include_router(purchase_routes.router)
+app.include_router(reports_stock_routes.router)

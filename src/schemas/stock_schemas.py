@@ -19,3 +19,14 @@ class StockRead(StockBase):
     class Config:
         from_attributes = True
         validate_by_name = True
+
+
+class StockReport(BaseModel):
+    product_id: int
+    description: str
+    quantity: int
+    unit_price: float
+    total_value: float
+
+    class Config:
+        from_attributes = True
