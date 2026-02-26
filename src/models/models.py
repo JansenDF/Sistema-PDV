@@ -77,3 +77,13 @@ class SaleItems(Base):
 
     sale: Mapped["Sales"] = relationship(back_populates="items")
     product: Mapped["Products"] = relationship()
+
+
+class Suppliers(Base):
+    __tablename__ = "suppliers"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, index=True)
+    company_name: Mapped[str] = mapped_column(String, nullable=False)
+    created_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True), onupdate=func.now())
+    deleted_at: Mapped[Optional[datetime.datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
