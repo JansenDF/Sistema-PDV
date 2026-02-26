@@ -16,6 +16,7 @@ class PurchaseRepository:
         try:
             new_purchase = Purchases(
                 supplier_id=purchase.supplier_id,
+                stock_id=purchase.stock_id,
                 created_at=datetime.datetime.now(),
                 updated_at=datetime.datetime.now()
             )

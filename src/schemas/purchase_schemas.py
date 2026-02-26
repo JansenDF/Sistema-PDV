@@ -10,6 +10,7 @@ class Items(BaseModel):
 
 class PurchaseBase(BaseModel):
     supplier_id: int
+    stock_id: int
     items: list[Items]
 
 
@@ -19,6 +20,7 @@ class PurchaseCreate(PurchaseBase):
 
 class PurchaseUpdate(BaseModel):
     supplier_id: Optional[int] = None
+    stock_id: Optional[int] = None
     items: Optional[list[Items]] = None
 
 
