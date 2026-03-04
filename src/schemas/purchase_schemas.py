@@ -2,8 +2,21 @@ from pydantic import BaseModel
 from typing import Optional
 import datetime
 
+
+class Product(BaseModel):
+    description: str
+
+
+class Stock(BaseModel):
+    description: str
+
+
+class Supplier(BaseModel):
+    company_name: str
+
 class Items(BaseModel):
     product_id: int
+    product: Product
     quantity: int
     unit_price: float
 
@@ -11,6 +24,8 @@ class Items(BaseModel):
 class PurchaseBase(BaseModel):
     supplier_id: int
     stock_id: int
+    supplier: Supplier
+    stock: Stock
     items: list[Items]
 
 

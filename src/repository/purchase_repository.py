@@ -2,7 +2,7 @@ import datetime
 from fastapi import Depends, HTTPException, status
 
 from sqlalchemy import select, update
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from sqlalchemy.exc import IntegrityError
 
 from src.schemas.purchase_schemas import PurchaseCreate
@@ -67,7 +67,11 @@ class PurchaseRepository:
                 filters.append(sqlalchemybinaryexpression)
 
         try:
-            select_purchase = select(Purchases).where(*filters)
+            select_purchase = select(Purchases).options(
+                joinedload(Purchases.supplier),
+                joinedload(Purchases.stock),
+                joinedload(Purchases.items).joinedload(PurchasesItems.product)
+            ).where(*filters)
             if params['skip'] is not None and params['limit'] is not None:
                 salt = (params['skip'] * params['limit']) - params['limit']
                 skip = 0 if salt < 0 else salt
