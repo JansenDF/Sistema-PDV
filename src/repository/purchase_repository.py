@@ -27,8 +27,6 @@ class PurchaseRepository:
                 product = db.query(Products).filter(Products.id == item.product_id).first()
                 if not product:
                     raise HTTPException(status_code=404, detail="Produto não encontrado")
-                if product.quantity < item.quantity:
-                    raise HTTPException(status_code=400, detail="Estoque insuficiente")
 
                 # Atualiza estoque
                 product.quantity += item.quantity

@@ -29,8 +29,17 @@ class PurchaseBase(BaseModel):
     items: list[Items]
 
 
-class PurchaseCreate(PurchaseBase):
-    pass
+class ItemCreate(BaseModel):
+    product_id: int
+    quantity: int
+    unit_price: float
+
+
+class PurchaseCreate(BaseModel):
+    supplier_id: int
+    stock_id: int
+    items: list[ItemCreate]
+
 
 
 class PurchaseUpdate(BaseModel):
