@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from src.models import models
 from src.routes import (
+    login_routes,
     user_routes,
     stock_routes,
     product_routes,
@@ -31,3 +32,4 @@ app.include_router(sale_routes.router)
 app.include_router(supplier_routes.router)
 app.include_router(purchase_routes.router)
 app.include_router(reports_routes.router)
+app.include_router(login_routes.router)
