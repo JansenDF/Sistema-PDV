@@ -55,7 +55,7 @@ class LoginRepository:
                 "exp": exp
             }
             access_token = jwt.encode(payload,key=SECRET_KEY, algorithm=ALGORITHM)
-            return {"access_token": access_token, "email": userdb.email, "name": userdb.name }
+            return {"access_token": access_token, "email": userdb.email, "name": userdb.name, "id": userdb.id }
         except Exception as e:
             print("3")
             print(e)
