@@ -34,6 +34,8 @@ class Products(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, index=True)
     description: Mapped[str] = mapped_column(String, index=True)
+    product_sub_category_id: Mapped[int] = mapped_column(ForeignKey("product_sub_category.id"), nullable=True)
+    product_sub_category: Mapped["ProductSubCategory"] = relationship(back_populates="products")
     quantity: Mapped[int] = mapped_column(Integer, nullable=False)
     price: Mapped[float] = mapped_column(Numeric(10, 2), nullable=False)
     stock_id: Mapped[int] = mapped_column(ForeignKey("stocks.id"))
@@ -115,3 +117,31 @@ class PurchasesItems(Base):
 
     purchase: Mapped["Purchases"] = relationship(back_populates="items")
     product: Mapped["Products"] = relationship()
+
+
+class ProductCategory(Base):
+    __tablename__ = "product_category"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, index=True)
+    description: Mapped[str] = mapped_column(String, index=True)
+    product_sub_category: Mapped[list["ProductSubCategory"]] = relationship(
+        back_populates="product_category",
+        cascade="all, delete-orphan"
+    )
+    created_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True), onupdate=func.now())
+    deleted_at: Mapped[Optional[datetime.datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
+
+
+class ProductSubCategory(Base):
+    __tablename__ = "product_sub_category"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, index=True)
+    description: Mapped[str] = mapped_column(String, index=True)
+    product_category_id: Mapped[int] = mapped_column(ForeignKey("product_category.id"))
+    product_category: Mapped["ProductCategory"] = relationship(back_populates="product_sub_category")
+    products: Mapped[list["Products"]] = relationship(back_populates="product_sub_category")
+
+    created_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True), onupdate=func.now())
+    deleted_at: Mapped[Optional[datetime.datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
