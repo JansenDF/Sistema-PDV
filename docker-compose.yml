@@ -12,7 +12,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - controleloja_postgres_data:/var/lib/postgresql/data
 
   pgadmin:
     image: dpage/pgadmin4:latest
@@ -28,6 +28,27 @@ services:
     volumes:
       - pgadmin_data:/var/lib/pgadmin
 
+  backend:
+    build: ../Sistema-PDV
+    container_name: fastapi-backend
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgresql+psycopg2://admin:senha123@postgres:5432/distribuidora
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build: ../Sistema-PDV_web
+    container_name: react-frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+
 volumes:
-  postgres_data:
+  controleloja_postgres_data:
+    external: true
   pgadmin_data:
