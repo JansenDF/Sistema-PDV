@@ -9,12 +9,20 @@ class ProductBase(BaseModel):
 
 class ProductCreate(ProductBase):
     stock_id: int
+    product_sub_category_id: int
 
 class ProductUpdate(BaseModel):
     description: Optional[str] = None
     price: Optional[float] = None
+    product_sub_category_id: Optional[int] = None
 
 class StockRead(BaseModel):
+    description: str
+
+    class Config:
+        from_attributes = True
+
+class ProductSubCategoryRead(BaseModel):
     description: str
 
     class Config:
@@ -23,6 +31,7 @@ class StockRead(BaseModel):
 class ProductRead(ProductBase):
     id: int
     stock: StockRead
+    product_sub_category: ProductSubCategoryRead
     created_at: datetime.datetime
     updated_at: datetime.datetime
     deleted_at: Optional[datetime.datetime]
