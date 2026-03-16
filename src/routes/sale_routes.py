@@ -22,7 +22,7 @@ def create_sale(sale: SaleCreate, db: Session = Depends(get_db)):
 
 @router.get("/", response_model=list[SaleRead])
 def read_sales(db: Session = Depends(get_db)):
-    return db.query(Sales).all()
+    return db.query(Sales).order_by(Sales.created_at.desc()).all()
 
 
 @router.get("/{sale_id}", response_model=SaleRead)

@@ -2,8 +2,12 @@ from pydantic import BaseModel
 from typing import Optional
 import datetime
 
+class ProductRead(BaseModel):
+    description: str
+
 class Items(BaseModel):
     product_id: int
+    product: Optional[ProductRead] = None
     quantity: int
     unit_price: float
 
