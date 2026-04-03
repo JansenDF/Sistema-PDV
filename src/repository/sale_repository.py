@@ -19,9 +19,12 @@ class SaleRepository:
                 operator_id=sale.operator_id,
                 client_id=sale.client_id,
                 created_at=datetime.datetime.now(),
-                updated_at=datetime.datetime.now()
+                updated_at=datetime.datetime.now(),
+                total_value=0
             )
             db.add(new_sale)
+
+            total_value = 0
 
             # Cria os itens da venda
             for item in sale.items:
@@ -35,6 +38,9 @@ class SaleRepository:
                 product.quantity -= item.quantity
                 product.updated_at = datetime.datetime.now()
 
+                subtotal = item.quantity * float(item.unit_price)
+                total_value += subtotal
+
                 # Cria item da venda
                 sale_item = SaleItems(
                     sale=new_sale,  # usa relação em vez de id
@@ -44,6 +50,8 @@ class SaleRepository:
                 )
                 db.add(sale_item)
 
+            new_sale.total_value = total_value
+            
             # Só faz commit depois de validar tudo
             db.commit()
             db.refresh(new_sale)

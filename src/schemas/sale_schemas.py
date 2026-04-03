@@ -18,6 +18,7 @@ class SaleBase(BaseModel):
     operator_id: int
     client_id: int
     items: list[Items]
+    total_value: Optional[float] = 0
 
 class SaleCreate(SaleBase):
     pass

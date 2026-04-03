@@ -64,6 +64,7 @@ class Sales(Base):
     client_id: Mapped[int] = mapped_column(ForeignKey("clients.id"))
     client: Mapped["Clients"] = relationship()
     items: Mapped[list["SaleItems"]] = relationship(back_populates="sale", cascade="all, delete-orphan")
+    total_value: Mapped[Optional[float]] = mapped_column(Numeric(10, 2), nullable=True)
     created_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True), onupdate=func.now())
     deleted_at: Mapped[Optional[datetime.datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
