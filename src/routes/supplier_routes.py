@@ -20,7 +20,7 @@ def create_supplier(supplier: SupplierCreate, db: Session = Depends(get_db)):
 
 @router.get("/", response_model=list[SupplierRead])
 def read_suppliers(db: Session = Depends(get_db)):
-    return db.query(Suppliers).all()
+    return db.query(Suppliers).order_by(Suppliers.company_name.asc()).all()
 
 
 @router.get("/{supplier_id}", response_model=SupplierRead)

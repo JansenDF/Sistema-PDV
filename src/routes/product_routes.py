@@ -20,7 +20,7 @@ def create_product(product: ProductCreate, db: Session = Depends(get_db)):
 
 @router.get("/", response_model=list[ProductRead])
 def read_products(db: Session = Depends(get_db)):
-    return db.query(Products).all()
+    return db.query(Products).order_by(Products.description.asc()).all()
 
 
 @router.get("/{product_id}", response_model=ProductRead)

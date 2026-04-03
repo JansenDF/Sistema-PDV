@@ -22,7 +22,7 @@ def create_purchase(purchase: PurchaseCreate, db: Session = Depends(get_db)):
 
 @router.get("/", response_model=list[PurchaseRead])
 def read_purchase(db: Session = Depends(get_db)):
-    return db.query(Purchases).all()
+    return db.query(Purchases).order_by(Purchases.created_at.desc()).all()
 
 
 @router.get("/{purchase_id}", response_model=PurchaseRead)

@@ -20,7 +20,7 @@ def create_stocks(stock: StockCreate, db: Session = Depends(get_db)):
 
 @router.get("/", response_model=list[StockRead])
 def read_stocks(db: Session = Depends(get_db)):
-    return db.query(Stocks).all()
+    return db.query(Stocks).order_by(Stocks.description.asc()).all()
 
 
 @router.get("/{stock_id}", response_model=StockRead)

@@ -20,7 +20,7 @@ def create_client(client: ClientCreate, db: Session = Depends(get_db)):
 
 @router.get("/", response_model=list[ClientRead])
 def read_clients(db: Session = Depends(get_db)):
-    return db.query(Clients).all()
+    return db.query(Clients).order_by(Clients.name.asc()).all()
 
 
 @router.get("/{client_id}", response_model=ClientRead)

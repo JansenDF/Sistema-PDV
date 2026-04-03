@@ -20,7 +20,7 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
 
 @router.get("/", response_model=list[UserRead])
 def read_users(db: Session = Depends(get_db)):
-    return db.query(Users).all()
+    return db.query(Users).order_by(Users.name.asc()).all()
 
 
 @router.get("/{user_id}", response_model=UserRead)

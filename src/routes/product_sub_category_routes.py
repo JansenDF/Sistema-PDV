@@ -24,7 +24,7 @@ def create_category(product_sub_category: ProductSubCategoryCreate, db: Session 
 
 @router.get("/", response_model=list[ProductSubCategoryRead])
 def read_product_sub_category(db: Session = Depends(get_db)):
-    return db.query(ProductSubCategory).all()
+    return db.query(ProductSubCategory).order_by(ProductSubCategory.description.asc()).all()
 
 
 @router.get("/{product_sub_category_id}", response_model=ProductSubCategoryRead)
