@@ -18,7 +18,8 @@ class SaleBase(BaseModel):
     operator_id: int
     client_id: int
     items: list[Items]
-    total_value: Optional[float] = 0
+    total_value: Optional[float] = None
+    date: Optional[datetime.date]
 
 class SaleCreate(SaleBase):
     pass
@@ -27,6 +28,7 @@ class SaleUpdate(BaseModel):
     operator_id: Optional[int] = None
     client_id: Optional[int] = None
     items: Optional[list[Items]] = None
+    date: Optional[datetime.datetime] = None
 
 class SaleRead(SaleBase):
     id: int
@@ -45,6 +47,7 @@ class SaleSummary(BaseModel):
     operator_name: str
     total_value: float
     created_at: datetime.datetime
+    date: datetime.date
 
     class Config:
         from_attributes = True

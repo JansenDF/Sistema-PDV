@@ -1,6 +1,6 @@
 import datetime
 from typing import Optional
-from sqlalchemy import String, Integer, DateTime, ForeignKey, Numeric
+from sqlalchemy import String, Integer, DateTime, ForeignKey, Numeric, Date
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
 from src.db.base import Base
@@ -65,6 +65,7 @@ class Sales(Base):
     client: Mapped["Clients"] = relationship()
     items: Mapped[list["SaleItems"]] = relationship(back_populates="sale", cascade="all, delete-orphan")
     total_value: Mapped[Optional[float]] = mapped_column(Numeric(10, 2), nullable=True)
+    date: Mapped[Optional[datetime.date]] = mapped_column(Date, nullable=True)
     created_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True), onupdate=func.now())
     deleted_at: Mapped[Optional[datetime.datetime]] = mapped_column(DateTime(timezone=True), nullable=True)

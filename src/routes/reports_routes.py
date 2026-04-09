@@ -51,7 +51,8 @@ def sales_report(
                 client_name=s.client.name,
                 operator_name=s.operator.name,
                 total_value=total_value,
-                created_at=s.created_at
+                created_at=s.created_at,
+                date=s.date
             )
         )
     return report

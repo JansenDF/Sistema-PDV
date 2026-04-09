@@ -20,7 +20,8 @@ class SaleRepository:
                 client_id=sale.client_id,
                 created_at=datetime.datetime.now(),
                 updated_at=datetime.datetime.now(),
-                total_value=0
+                total_value=0,
+                date=sale.date
             )
             db.add(new_sale)
 
