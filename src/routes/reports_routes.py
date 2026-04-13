@@ -6,9 +6,10 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func
 from src.schemas.sold_schemas import SoldBase
 from src.db.connectdb import get_db
-from src.models.models import Products, Sales, SaleItems
+from src.models.models import Products, Sales, SaleItems, Purchases
 from src.schemas.stock_schemas import StockReport
 from src.schemas.sale_schemas import SaleSummary
+from src.schemas.purchase_schemas import PurchaseRead
 
 
 router = APIRouter(prefix="/reports", tags=["Relatórios"])
@@ -54,6 +55,27 @@ def sales_report(
                 created_at=s.created_at,
                 date=s.date
             )
+        )
+    return report
+
+
+@router.get("/purchases", response_model=list[PurchaseRead])
+def purchases_report(
+    start_date: Optional[datetime.date] = None,
+    end_date: Optional[datetime.date] = None,
+    db: Session = Depends(get_db)
+):
+    query = db.query(Purchases)
+    if start_date:
+        query = query.filter(Purchases.created_at >= start_date)
+    if end_date:
+        query = query.filter(Purchases.created_at <= end_date)
+
+    purchases = query.all()
+    report = []
+    for p in purchases:
+        report.append(
+            p
         )
     return report
 

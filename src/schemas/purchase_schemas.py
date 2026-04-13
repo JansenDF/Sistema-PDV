@@ -26,6 +26,7 @@ class PurchaseBase(BaseModel):
     stock_id: int
     supplier: Supplier
     stock: Stock
+    total_value: Optional[float] = None
     items: list[Items]
 
 

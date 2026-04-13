@@ -17,10 +17,13 @@ class PurchaseRepository:
             new_purchase = Purchases(
                 supplier_id=purchase.supplier_id,
                 stock_id=purchase.stock_id,
+                total_value=0,
                 created_at=datetime.datetime.now(),
                 updated_at=datetime.datetime.now()
             )
             db.add(new_purchase)
+
+            total_value = 0
 
             # Cria os itens da venda
             for item in purchase.items:
@@ -32,6 +35,9 @@ class PurchaseRepository:
                 product.quantity += item.quantity
                 product.updated_at = datetime.datetime.now()
 
+                subtotal = item.quantity * float(item.unit_price)
+                total_value += subtotal
+
                 # Cria item da venda
                 purchase_item = PurchasesItems(
                     purchase=new_purchase,  # usa relação em vez de id
@@ -40,6 +46,8 @@ class PurchaseRepository:
                     unit_price=item.unit_price,
                 )
                 db.add(purchase_item)
+
+            new_purchase.total_value = total_value
 
             # Só faz commit depois de validar tudo
             db.commit()

@@ -102,6 +102,7 @@ class Purchases(Base):
     supplier: Mapped["Suppliers"] = relationship()
     stock_id: Mapped[int] = mapped_column(ForeignKey("stocks.id"))
     stock: Mapped["Stocks"] = relationship()
+    total_value: Mapped[Optional[float]] = mapped_column(Numeric(10, 2), nullable=True)
     items: Mapped[list["PurchasesItems"]] = relationship(back_populates="purchase", cascade="all, delete-orphan")
     created_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True), onupdate=func.now())
