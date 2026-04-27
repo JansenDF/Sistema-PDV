@@ -15,6 +15,7 @@ from src.models.models import Users
 
 SECRET_KEY = config("SECRET_KEY")
 ALGORITHM = config("ALGORITHM")
+REFRESH_TOKEN_EXPIRE_DAYS = config("REFRESH_TOKEN_EXPIRE_DAYS")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(config("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
 crypt_context = CryptContext(schemes=["sha256_crypt"])
@@ -56,21 +57,31 @@ class LoginRepository:
                 print("2")
                 raise cls.__response400
                 
-            exp = datetime.utcnow() + timedelta(minutes=expires_in)
-            payload = {
+            exp_access = datetime.utcnow() + timedelta(minutes=expires_in)
+            payload_access = {
                 "sub": json.dumps({"email": userdb.email, "name": userdb.name}),
-                "exp": exp
+                "exp": exp_access,
+                "type": "access"
             }
-            access_token = jwt.encode(payload,key=SECRET_KEY, algorithm=ALGORITHM)
+            access_token = jwt.encode(payload_access,key=SECRET_KEY, algorithm=ALGORITHM)
+            
+            exp_refresh = datetime.utcnow() + timedelta(days=int(REFRESH_TOKEN_EXPIRE_DAYS))
+            payload_refresh = {
+                "sub": json.dumps({"email": userdb.email, "name": userdb.name}),
+                "exp": exp_refresh,
+                "type": "refresh"
+            }
+            refresh_token = jwt.encode(payload_refresh, key=SECRET_KEY, algorithm=ALGORITHM)
+
             return {
                 "access_token": access_token,
+                "refresh_token": refresh_token,
                 "token_type": "bearer",
                 "email": userdb.email,
                 "name": userdb.name,
                 "id": userdb.id
             }
         except Exception as e:
-            print("3")
             print(e)
             raise
         # finally:
