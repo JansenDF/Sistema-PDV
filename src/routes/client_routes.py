@@ -4,9 +4,10 @@ from src.db.connectdb import get_db
 from src.models.models import Clients
 from src.schemas.client_schemas import ClientRead, ClientCreate, ClientUpdate
 from src.repository.client_repository import ClientRepository
+from src.repository.login_repository import token_verify
 
 
-router = APIRouter(prefix="/clients", tags=["Clientes"])
+router = APIRouter(prefix="/clients", tags=["Clientes"], dependencies=[Depends(token_verify)])
 
 @router.post("/", response_model=ClientRead)
 def create_client(client: ClientCreate, db: Session = Depends(get_db)):

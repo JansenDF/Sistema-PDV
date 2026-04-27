@@ -4,9 +4,10 @@ from src.db.connectdb import get_db
 from src.models.models import Stocks
 from src.schemas.stock_schemas import StockRead, StockCreate, StockUpdate
 from src.repository.stock_repository import StockRepository
+from src.repository.login_repository import token_verify
 
 
-router = APIRouter(prefix="/stocks", tags=["Estoques"])
+router = APIRouter(prefix="/stocks", tags=["Estoques"], dependencies=[Depends(token_verify)])
 
 @router.post("/", response_model=StockRead)
 def create_stocks(stock: StockCreate, db: Session = Depends(get_db)):

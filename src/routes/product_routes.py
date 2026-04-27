@@ -4,9 +4,10 @@ from src.db.connectdb import get_db
 from src.models.models import Products
 from src.schemas.product_schema import ProductRead, ProductCreate, ProductUpdate
 from src.repository.product_repository import ProductRepository
+from src.repository.login_repository import token_verify
 
 
-router = APIRouter(prefix="/products", tags=["Produtos"])
+router = APIRouter(prefix="/products", tags=["Produtos"], dependencies=[Depends(token_verify)])
 
 @router.post("/", response_model=ProductRead)
 def create_product(product: ProductCreate, db: Session = Depends(get_db)):

@@ -4,9 +4,10 @@ from src.db.connectdb import get_db
 from src.models.models import Sales
 from src.schemas.sale_schemas import SaleRead, SaleCreate, SaleUpdate
 from src.repository.sale_repository import SaleRepository
+from src.repository.login_repository import token_verify
 
 
-router = APIRouter(prefix="/sales", tags=["Vendas"])
+router = APIRouter(prefix="/sales", tags=["Vendas"], dependencies=[Depends(token_verify)])
 
 @router.post("/", response_model=SaleRead)
 def create_sale(sale: SaleCreate, db: Session = Depends(get_db)):

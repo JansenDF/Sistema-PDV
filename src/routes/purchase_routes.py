@@ -4,9 +4,10 @@ from src.db.connectdb import get_db
 from src.models.models import Purchases
 from src.schemas.purchase_schemas import PurchaseRead, PurchaseCreate, PurchaseUpdate
 from src.repository.purchase_repository import PurchaseRepository
+from src.repository.login_repository import token_verify
 
 
-router = APIRouter(prefix="/purchase", tags=["Compras"])
+router = APIRouter(prefix="/purchase", tags=["Compras"], dependencies=[Depends(token_verify)])
 
 @router.post("/", response_model=PurchaseRead)
 def create_purchase(purchase: PurchaseCreate, db: Session = Depends(get_db)):

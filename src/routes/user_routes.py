@@ -4,6 +4,7 @@ from src.db.connectdb import get_db
 from src.models.models import Users
 from src.schemas.user_schemas import UserCreate, UserRead, UserUpdate
 from src.repository.user_repository import UserRepository
+from src.repository.login_repository import token_verify
 
 
 router = APIRouter(prefix="/users", tags=["Usuários"])
@@ -18,12 +19,12 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Não foi possível cadastrar o usuário")
 
 
-@router.get("/", response_model=list[UserRead])
+@router.get("/", response_model=list[UserRead], dependencies=[Depends(token_verify)])
 def read_users(db: Session = Depends(get_db)):
     return db.query(Users).order_by(Users.name.asc()).all()
 
 
-@router.get("/{user_id}", response_model=UserRead)
+@router.get("/{user_id}", response_model=UserRead, dependencies=[Depends(token_verify)])
 def read_user(user_id: int, db: Session = Depends(get_db)):
     user = db.query(Users).get(user_id)
     if not user:
@@ -33,7 +34,7 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
 from src.schemas.user_schemas import UserUpdate  # Certifique-se de ter esse schema
 
 
-@router.patch("/{user_id}", response_model=UserRead)
+@router.patch("/{user_id}", response_model=UserRead, dependencies=[Depends(token_verify)])
 def partial_update_user(user_id: int, user: UserUpdate, db: Session = Depends(get_db)):
 
     has_user = db.query(Users).get(user_id)

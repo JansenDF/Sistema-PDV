@@ -6,9 +6,10 @@ from src.schemas.product_category_schemas import (
     ProductCategoryRead, ProductCategoryCreate, ProductCategoryUpdate
 )
 from src.repository.product_category_repository import ProductCategoryRepository
+from src.repository.login_repository import token_verify
 
 
-router = APIRouter(prefix="/product_categories", tags=["Categorias de Produtos"])
+router = APIRouter(prefix="/product_categories", tags=["Categorias de Produtos"], dependencies=[Depends(token_verify)])
 
 @router.post("/", response_model=ProductCategoryRead)
 def create_category(product_category: ProductCategoryCreate, db: Session = Depends(get_db)):

@@ -4,9 +4,10 @@ from src.db.connectdb import get_db
 from src.models.models import Suppliers
 from src.schemas.supplier_schemas import SupplierRead, SupplierCreate, SupplierUpdate
 from src.repository.supplier_repository import SupplierRepository
+from src.repository.login_repository import token_verify
 
 
-router = APIRouter(prefix="/suppliers", tags=["Fornecedores"])
+router = APIRouter(prefix="/suppliers", tags=["Fornecedores"], dependencies=[Depends(token_verify)])
 
 @router.post("/", response_model=SupplierRead)
 def create_supplier(supplier: SupplierCreate, db: Session = Depends(get_db)):

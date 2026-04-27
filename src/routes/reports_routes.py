@@ -10,9 +10,10 @@ from src.models.models import Products, Sales, SaleItems, Purchases
 from src.schemas.stock_schemas import StockReport
 from src.schemas.sale_schemas import SaleSummary
 from src.schemas.purchase_schemas import PurchaseRead
+from src.repository.login_repository import token_verify
 
 
-router = APIRouter(prefix="/reports", tags=["Relatórios"])
+router = APIRouter(prefix="/reports", tags=["Relatórios"], dependencies=[Depends(token_verify)])
 
 @router.get("/stock", response_model=list[StockReport])
 def stock_report(db: Session = Depends(get_db)):
