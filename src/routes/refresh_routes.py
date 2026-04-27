@@ -24,16 +24,13 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 @router.post("/refresh")
 def refresh_token(request: RefreshRequest, db: Session = Depends(get_db)):
-    print("Refresh token recebido:", refresh_token)
     try:
         payload = jwt.decode(request.refresh_token, SECRET_KEY, algorithms=[ALGORITHM])
         if payload.get("type") != "refresh":
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token inválido")
-        print("Payload decodificado:", payload)
         user_data = json.loads(payload["sub"])
         query = select(Users).where(Users.email == user_data["email"])
         userdb = db.execute(query).scalars().first()
-        print("Usuário encontrado no banco:", userdb)
         if not userdb:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Usuário não encontrado")
 
