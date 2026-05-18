@@ -4,6 +4,7 @@ import datetime
 
 class ProductBase(BaseModel):
     description: str
+    barcode: Optional[str] = None
     quantity: int
     price: float
 
@@ -13,6 +14,7 @@ class ProductCreate(ProductBase):
 
 class ProductUpdate(BaseModel):
     description: Optional[str] = None
+    barcode: Optional[str] = None
     price: Optional[float] = None
     product_sub_category_id: Optional[int] = None
 

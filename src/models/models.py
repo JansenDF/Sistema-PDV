@@ -34,6 +34,7 @@ class Products(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, index=True)
     description: Mapped[str] = mapped_column(String, index=True)
+    barcode: Mapped[Optional[str]] = mapped_column(String, unique=True, index=True, nullable=True)
     product_sub_category_id: Mapped[int] = mapped_column(ForeignKey("product_sub_category.id"), nullable=True)
     product_sub_category: Mapped["ProductSubCategory"] = relationship(back_populates="products")
     quantity: Mapped[int] = mapped_column(Integer, nullable=False)
